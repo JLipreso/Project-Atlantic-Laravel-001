@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
  * 
  * \App\Http\Controllers\db_warehouse\TBLStocksFetch::fetchByItemNo($item_no);
  * db_warehouse/TBLStocksFetchFetchByItemNo?item_no=[STR]&bodega=[STR]
+ * 
+ * db_warehouse/TBLStocksFetchFetchWithLocators/{item_no}
  */
 
 class TBLStocksFetch extends Controller
@@ -119,15 +121,4 @@ class TBLStocksFetch extends Controller
             ];
         }
     }
-
-    public static function test(Request $request) {
-        return DB::connection('db_warehouse')
-        ->table('tbl_stocks')
-        ->select(DB::raw("RIGHT(LEFT(locator,2),1)"))
-        ->limit(50)
-        ->get();
-    }
-
-    
-
 }
