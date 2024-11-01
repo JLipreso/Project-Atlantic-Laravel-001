@@ -86,6 +86,21 @@ class TBLLocatorHistory extends Controller
                         "posted"        => 1,
                         "posted_date"   => date('Y-m-d h:i:s')
                     ]);
+
+                    $sum = DB::connection('db_warehouse')
+                    ->table('tbl_stock_locator_history')
+                    ->where([
+                        ['ws_ctrl_no', $record->ws_ctrl_no],
+                        ['ws_detail_ctrl_no', $record->ws_detail_ctrl_no]
+                    ])
+                    ->sum('quantity');
+
+                    DB::connection('db_warehouse')
+                    ->table('tbl_wsdetail')
+                    ->where('recnum', $record->ws_detail_ctrl_no)
+                    ->update([
+                        'rel_unit' => $sum
+                    ]);
                 }
         
                 $list[] = [
@@ -95,7 +110,19 @@ class TBLLocatorHistory extends Controller
                 ];
             }
 
-            return $list;
+            $post_header = DB::connection('db_warehouse')
+                ->table('tbl_ws')
+                ->where('ctrl_no', $request['ws_ctrl_no'])
+                ->update([
+                    'pickstop'      => date('h:i:s'),
+                    'pickpost'      => 1
+                ]);
+
+            return [
+                "success"   => true,
+                "message"   => "Posted successfully",
+                "data"      => $list
+            ];
 
         }
         else {

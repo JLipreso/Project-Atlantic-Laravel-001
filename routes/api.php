@@ -32,6 +32,10 @@ Route::group(['prefix' => 'db_warehouse'], function () {
     Route::get('TBLLocatorHistoryCreateWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'createWithdrawal']);
     Route::get('TBLLocatorHistoryPostWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'postWithdrawal']);
     Route::get('TBLWSPaginateSearch', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'paginateSearch']);
+
+    Route::get('TBLWSFetchUpdatePickStart', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'updatePickStart']);
+
+
     Route::get('TBLWSProfile/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'profile']);
 });
 

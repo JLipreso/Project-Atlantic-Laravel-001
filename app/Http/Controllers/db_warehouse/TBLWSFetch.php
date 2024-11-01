@@ -238,4 +238,22 @@ class TBLWSFetch extends Controller
             ];
         }
     }
+
+    public static function updatePickStart(Request $request) {
+        $updated = DB::connection('db_warehouse')
+            ->table('tbl_ws')
+            ->where('ctrl_no', $request['ctrl_no'])
+            ->update([
+                'picker_no'     => $request['picker_no'],
+                'pickstart'     => date('h:i:s'),
+                'pickername'    => $request['pickername']
+            ]);
+
+        if($updated) {
+            return [ "success" => true ];
+        }
+        else {
+            return [ "success" => false ];
+        }
+    }
 }
