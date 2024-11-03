@@ -23,19 +23,19 @@ Route::group(['prefix' => 'db_accounts'], function () {
 });
 
 Route::group(['prefix' => 'db_warehouse'], function () {
+
+    Route::get('PrintWithdrawalSlip', [App\Http\Controllers\db_warehouse\PrintWithdrawalSlip::class, 'print']);
     Route::get('TBLLocatorFetchSearch/{keyword}', [App\Http\Controllers\db_warehouse\TBLLocatorFetch::class, 'search']);
     Route::get('TBLStocksFetchPaginateSearch', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'paginateSearch']);
     Route::get('TBLStocksFetchFetchByItemNo', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'fetchByItemNo']);
+    Route::get('TBLStocksFetchScanBarcodeItemCode', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'scanBarcodeItemCode']);
     Route::get('TBLStocksLocatorCreate', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'create']);
     Route::get('TBLStocksLocatorUpdateActual', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'updateActual']);
     Route::get('TBLStocksLocatorUpdateReceive', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'updateReceive']);
     Route::get('TBLLocatorHistoryCreateWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'createWithdrawal']);
     Route::get('TBLLocatorHistoryPostWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'postWithdrawal']);
     Route::get('TBLWSPaginateSearch', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'paginateSearch']);
-
     Route::get('TBLWSFetchUpdatePickStart', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'updatePickStart']);
-
-
     Route::get('TBLWSProfile/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'profile']);
 });
 

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
  * db_warehouse/TBLStocksFetchFetchByItemNo?item_no=[STR]&bodega=[STR]
  * 
  * db_warehouse/TBLStocksFetchFetchWithLocators/{item_no}
+ * 
+ * db_warehouse/TBLStocksFetchScanBarcodeItemCode?keyword={keyword}
  */
 
 class TBLStocksFetch extends Controller
@@ -120,5 +122,16 @@ class TBLStocksFetch extends Controller
                 "photos"    => []
             ];
         }
+    }
+
+    public static function scanBarcodeItemCode(Request $request) {
+        return DB::connection('db_warehouse')->table('tbl_stocks')
+            ->where( function ($query) use ($request) {
+                $query
+                    ->where('itemcode', $request['keyword'])
+                    ->orWhere('barcode', $request['keyword']);
+            })
+            ->orderBy('d_desc', 'asc')
+            ->paginate(12);
     }
 }
