@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * db_warehouse/TBLWSPaginateSearch?group=ws_no&keyword=1&bodega=1&page=1
+ * \App\Http\Controllers\db_warehouse\TBLWSFetch::profile($ctrl_no);
  */
 
 class TBLWSFetch extends Controller

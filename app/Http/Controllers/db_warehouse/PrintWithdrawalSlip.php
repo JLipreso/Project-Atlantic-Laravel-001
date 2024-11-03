@@ -4,36 +4,43 @@ namespace App\Http\Controllers\db_warehouse;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Codedge\Fpdf\Fpdf\Fpdf;
+
+/**
+ * db_warehouse/PrintWithdrawalSlip?ctrl_no=173917
+ */
 
 class PrintWithdrawalSlip extends Controller
 {
     public static function print(Request $request) {
 
+        $profile            = \App\Http\Controllers\db_warehouse\TBLWSFetch::profile($request['ctrl_no']);
+
         $base_height        = 120;
-        $product_counts     = 2;
+        $product_counts     = count($profile['child']);
         $page_height        = $base_height + ($product_counts * 26);
         
         $fpdf = new \Sarabitcom\Fpdf\FpdfCode39('P', 'mm', [80, $page_height]);
         $fpdf->AddPage();
-        $fpdf->SetLeftMargin(2);
+        $fpdf->SetMargins(2, 1, 2);
 
-        /** Variables */
         $parameters = [
             "border"            => 0,
             "width_full"        => 80,
             "width_half"        => 37.5,
-            "mode"              => "3-S/R",
+            "mode"              => $profile['header']->mode,
+            "pickername"        => $profile['header']->pickername,
             "printed"           => [
-                "date"              => "10/20/2024",
-                "time"              => "09:30:24"
+                "date"              => date('M/d/Y'),
+                "time"              => date('h:i:s')
             ],
             "header"            => [
-                "ctrl_no"           => "1234",
-                "date"              => "10/10/2024",
-                "branch"            => "MDIY",
-                "ws_no"             => "23556",
-            ]
+                "ctrl_no"           => $profile['header']->ctrl_no,
+                "date"              => $profile['header']->dated,
+                "branch"            => $profile['header']->branch,
+                "ws_no"             => $profile['header']->ws_no,
+                "remarks"           => $profile['header']->remarks
+            ],
+            "child"             => $profile['child']
         ];
 
         $fpdf->Code39(30, 31.5, "1234", 1.5, 14);
@@ -47,22 +54,25 @@ class PrintWithdrawalSlip extends Controller
     }
 
     public static function products($fpdf, $parameters) {
+
         $fpdf->SetFont('Arial', '', 8);
         $border = 1;
         $fpdf->setY(87);
-        for($i = 0; $i < 2; $i++) {
-            $fpdf->Cell(18.7, 5, "ITEMCODE", $border, 0);
-            $fpdf->Cell(18.7, 5, "UNIT", $border, 0);
-            $fpdf->Cell(18.7, 5, "LOCATOR", $border, 0);
+
+        foreach($parameters['child'] as $product) {
+            $fpdf->Cell(18.7, 5, $product['item']->itemcode, $border, 0);
+            $fpdf->Cell(18.7, 5, $product['item']->unit, $border, 0);
+            $fpdf->Cell(18.7, 5, $product['stock']->locator, $border, 0);
             $fpdf->Cell(18.7, 5, "BRAND", $border, 1);
-            $fpdf->MultiCell(75, 12, "This method allows printing text with line breaks.", $border);
-            $fpdf->Cell(25, 5, "REQ QTY", $border, 0);
-            $fpdf->Cell(25, 5, "REL QTY", $border, 0);
+            $fpdf->MultiCell(75, 12, $product['stock']->d_desc, $border);
+            $fpdf->Cell(25, 5, "REQ QTY : " . $product['item']->qty_unit, $border, 0);
+            $fpdf->Cell(25, 5, "REL QTY : " . $product['item']->rel_unit, $border, 0);
             $fpdf->Cell(25, 5, "PACK", $border, 0);
             $fpdf->Ln();
             $fpdf->Ln();
         }
-        $fpdf->Cell(75, 5, "PICKED BY: USERNAME", $parameters['border'], 0);
+
+        $fpdf->Cell(75, 5, "PICKED BY: " . $parameters['pickername'], $parameters['border'], 0);
     }
 
     public static function slipHeader($fpdf, $parameters) {
@@ -99,7 +109,7 @@ class PrintWithdrawalSlip extends Controller
         $fpdf->Cell(75, 5, "REMARKS:", $parameters['border'], 0);
         $fpdf->Ln();
 
-        $fpdf->MultiCell(75, 5, "This method allows printing text with line breaks. They can be automatic", $parameters['border']);
+        $fpdf->MultiCell(75, 5, $parameters['header']['remarks'], $parameters['border']);
         
 
     }
