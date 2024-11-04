@@ -19,11 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'db_accounts'], function () {
+    Route::get('verifyPostcode', [App\Http\Controllers\db_accounts\Postcode::class, 'verify']);
     Route::get('signIn', [App\Http\Controllers\db_accounts\SignIn::class, 'signin']);
 });
 
 Route::group(['prefix' => 'db_warehouse'], function () {
-
+    Route::get('TBLWSFetchDashboard', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'dashboard']);
     Route::get('PrintWithdrawalSlip', [App\Http\Controllers\db_warehouse\PrintWithdrawalSlip::class, 'print']);
     Route::get('TBLLocatorFetchSearch/{keyword}', [App\Http\Controllers\db_warehouse\TBLLocatorFetch::class, 'search']);
     Route::get('TBLStocksFetchPaginateSearch', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'paginateSearch']);

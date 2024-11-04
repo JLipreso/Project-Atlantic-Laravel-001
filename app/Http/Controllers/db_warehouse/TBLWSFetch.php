@@ -13,6 +13,54 @@ use Illuminate\Support\Facades\DB;
 
 class TBLWSFetch extends Controller
 {
+    public static function dashboard(Request $request) {
+
+
+        $fiverestock        = DB::connection('db_warehouse')
+                                ->table('tbl_ws')
+                                ->where([
+                                    ['mode', 'LIKE', '%5-RESTOCK%'],
+                                    ['post','=', 0],
+                                    ['pickpost','=', 0],
+                                    [DB::raw('RIGHT(department,1)'), $request['bodega']]
+                                ])
+                                ->count();
+        $priosr             = DB::connection('db_warehouse')
+                                ->table('tbl_ws')
+                                ->where([
+                                    ['mode', 'LIKE', '%PRIO-SR%'],
+                                    ['post','=', 0],
+                                    ['pickpost','=', 0],
+                                    [DB::raw('RIGHT(department,1)'), $request['bodega']]
+                                ])
+                                ->count();
+        $threesr            = DB::connection('db_warehouse')
+                                ->table('tbl_ws')
+                                ->where([
+                                    ['mode', 'LIKE', '%3-S/R%'],
+                                    ['post','=', 0],
+                                    ['pickpost','=', 0],
+                                    [DB::raw('RIGHT(department,1)'), $request['bodega']]
+                                ])
+                                ->count();
+        $twodel             = DB::connection('db_warehouse')
+                                ->table('tbl_ws')
+                                ->where([
+                                    ['mode', 'LIKE', '%2-DEL%'],
+                                    ['post','=', 0],
+                                    ['pickpost','=', 0],
+                                    [DB::raw('RIGHT(department,1)'), $request['bodega']]
+                                ])
+                                ->count();
+
+        return [
+            "fiverestock"   => $fiverestock,
+            "priosr"        => $priosr,
+            "threesr"       => $threesr,
+            "twodel"        => $twodel
+        ];
+    }
+
     public static function paginateSearch(Request $request) {
         if($request['bodega'] == '0') {
             return TBLWSFetch::paginateSearchOtherBodega($request);
