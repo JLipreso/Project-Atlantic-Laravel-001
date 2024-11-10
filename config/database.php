@@ -15,26 +15,30 @@ return [
     |
     */
 
-
-
+    /**
+     * /home/api-atlantic.jlipreso.com.com/public_html
+     * /home/api-atlantic.jlipreso.com/public_html/wms-v1/
+     * /home/api-atlantic.jlipreso.com/public_html/wms-v1/storage/
+     * /home/api-atlantic.jlipreso.com/public_html/wms-v1/storage/logs/
+     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
     'connections' => [
         'db_accounts' => [
             'driver'    => 'mysql',
-            'host'      => '127.0.0.1',
+            'host'      => '88.222.242.33',
             'port'      => '3306',
-            'database'  => 'api_atlantic_accounts',
-            'username'  => 'api_atlantic_accounts',
-            'password'  => '4uszjOg7uKMbjdma',
+            'database'  => 'apia_atlantic_accounts',
+            'username'  => 'apia_atlantic_accounts',
+            'password'  => '3N-u2b9otq9AbiOi',
         ],
         'db_warehouse' => [
             'driver'    => 'mysql',
-            'host'      => '127.0.0.1',
+            'host'      => '88.222.242.33',
             'port'      => '3306',
-            'database'  => 'api_atlantic_wms',
-            'username'  => 'api_atlantic_wms',
-            'password'  => 'nI8y1k*-Hu3CNzNy',
+            'database'  => 'apia_atlantic_wms',
+            'username'  => 'apia_atlantic_wms',
+            'password'  => 'z5J5OJ0l1B031ovh',
         ],
         'sqlite' => [
             'driver' => 'sqlite',
