@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
  * db_warehouse/TBLLocatorHistoryCreateWithdrawal?stock_locator_id=3&stock_action=OUT&quantity=99&qty_old=500.00&ws_ctrl_no=182125&ws_detail_ctrl_no=1527881&created_by=140
  * \App\Http\Controllers\db_warehouse\TBLLocatorHistory::picking($ws_ctrl_no, $ws_detail_ctrl_no);
  * 
+ * db_warehouse/TBLLocatorHistoryFetchReleaseSum?ws_ctrl_no=[INT]&ws_detail_ctrl_no=[INT]
+ * 
  */
 
 class TBLLocatorHistory extends Controller
@@ -57,6 +59,51 @@ class TBLLocatorHistory extends Controller
                 ];
             }
         }
+    }
+
+    public static function deleteWithdrawal(Request $request) {
+        $deleted = DB::connection("db_warehouse")->table("tbl_stock_locator_history")
+        ->where([
+            ["stock_locator_id", $request['stock_locator_id']],
+            ["ws_ctrl_no", $request['ws_ctrl_no']],
+            ["ws_detail_ctrl_no", $request['ws_detail_ctrl_no']],
+        ])
+        ->delete();
+        if($deleted) {
+            return [ "success" => true ];
+        }
+        else {
+            return [ "success" => false ];
+        }
+    }
+
+    public static function cancelReleaseItem(Request $request) {
+        $deleted = DB::connection("db_warehouse")->table("tbl_stock_locator_history")
+        ->where([
+            ["ws_ctrl_no", $request['ws_ctrl_no']],
+            ["ws_detail_ctrl_no", $request['ws_detail_ctrl_no']],
+        ])
+        ->delete();
+        if($deleted) {
+            return [ "success" => true ];
+        }
+        else {
+            return [ "success" => false ];
+        }
+    }
+
+    public static function fetchReleaseSum(Request $request) {
+        $sum = DB::connection('db_warehouse')
+                ->table('tbl_stock_locator_history')
+                ->where([
+                    ['ws_ctrl_no', $request['ws_ctrl_no']],
+                    ['ws_detail_ctrl_no', $request['ws_detail_ctrl_no']],
+                    ['posted', 0]
+                ])
+                ->sum('quantity');
+        return [
+            "sum" => floatval($sum)
+        ];
     }
 
     public static function postWithdrawal(Request $request) {

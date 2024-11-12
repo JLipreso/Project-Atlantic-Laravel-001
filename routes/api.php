@@ -33,7 +33,18 @@ Route::group(['prefix' => 'db_warehouse'], function () {
     Route::get('TBLStocksLocatorCreate', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'create']);
     Route::get('TBLStocksLocatorUpdateActual', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'updateActual']);
     Route::get('TBLStocksLocatorUpdateReceive', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'updateReceive']);
+    
+    //fetchLocatorStock($ctrl_no)
+    Route::get('TBLStocksLocatorFetchLocatorStock/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'fetchLocatorStock']);
+    
+    
     Route::get('TBLLocatorHistoryCreateWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'createWithdrawal']);
+
+    Route::get('TBLLocatorHistoryDeleteWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'deleteWithdrawal']);
+    Route::get('TBLLocatorHistoryFetchReleaseSum', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'fetchReleaseSum']);
+    Route::get('TBLLocatorHistoryCancelReleaseItem', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'cancelReleaseItem']);
+    
+    
     Route::get('TBLLocatorHistoryPostWithdrawal', [App\Http\Controllers\db_warehouse\TBLLocatorHistory::class, 'postWithdrawal']);
     Route::get('TBLWSPaginateSearch', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'paginateSearch']);
     Route::get('TBLWSFetchUpdatePickStart', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'updatePickStart']);

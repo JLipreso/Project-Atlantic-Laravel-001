@@ -30,6 +30,12 @@ class TBLStocksLocator extends Controller
                 "message"   => "Please provide quantity greater than zero."
             ];
         }
+        else if(TBLStocksLocator::isExist($request['item_no'], $request['locator'])) {
+            return [
+                "success"   => false,
+                "message"   => "Locator already exist"
+            ];
+        }
         else {
             $created = DB::connection('db_warehouse')->table('tbl_stocks_locator')->insert([
                 "item_no"       => $request['item_no'],
@@ -52,6 +58,24 @@ class TBLStocksLocator extends Controller
                     "message"   => "Fail to create locator"
                 ];
             }
+        }
+    }
+
+    public static function isExist($item_no, $locator) {
+        $count = DB::connection('db_warehouse')
+        ->table('tbl_stocks_locator')
+        ->where([
+            ['item_no', $item_no],
+            ['locator', $locator],
+            ['quantity', '>', 0]
+        ])
+        ->count();
+        
+        if($count > 0) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -104,5 +128,12 @@ class TBLStocksLocator extends Controller
                 "message"   => "Fail to update, try again later."
             ];
         }
+    }
+
+    public static function fetchLocatorStock($ctrl_no) {
+        return [
+            "header"    => [],
+            "item_info" => []      
+        ];
     }
 }
