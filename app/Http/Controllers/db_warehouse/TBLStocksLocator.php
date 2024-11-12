@@ -38,12 +38,13 @@ class TBLStocksLocator extends Controller
         }
         else {
             $created = DB::connection('db_warehouse')->table('tbl_stocks_locator')->insert([
-                "item_no"       => $request['item_no'],
-                "itemcode"      => $request['itemcode'],
-                "locator"       => strtoupper($request['locator']),
-                "quantity"      => $request['quantity'],
-                "created_at"    => date('Y-m-d h:i:s'),
-                "created_by"    => $request['created_by']
+                "item_no"           => $request['item_no'],
+                "itemcode"          => $request['itemcode'],
+                "locator"           => strtoupper($request['locator']),
+                "quantity"          => $request['quantity'],
+                "created_at"        => date('Y-m-d h:i:s'),
+                "created_by"        => $request['created_by'],
+                "created_by_name"   => $request['created_by_name']
             ]);
 
             if($created) {
