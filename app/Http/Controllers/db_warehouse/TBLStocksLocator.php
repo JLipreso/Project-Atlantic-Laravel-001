@@ -48,6 +48,7 @@ class TBLStocksLocator extends Controller
             ]);
 
             if($created) {
+                \App\Http\Controllers\db_warehouse\TBLStocksUpdate::updateWSTotal($request['item_no']);
                 return [
                     "success"   => true,
                     "message"   => "Successfully created"
@@ -118,6 +119,7 @@ class TBLStocksLocator extends Controller
         ->where('id', $request['id'])
         ->increment('quantity', intval($request['quantity']));
         if($updated) {
+            \App\Http\Controllers\db_warehouse\TBLStocksUpdate::updateWSTotal($request['item_no']);
             return [
                 "success"   => true,
                 "message"   => "Quantity updated successfully."

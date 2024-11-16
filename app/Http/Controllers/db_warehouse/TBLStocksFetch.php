@@ -21,37 +21,37 @@ class TBLStocksFetch extends Controller
 {
     public static function paginateSearch(Request $request) {
         if($request['group'] == 'ctrl_no') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('ctrl_no', 'like', $request['keyword'] . '%')
             ->orderBy('ctrl_no', 'asc')
             ->paginate(12);
         }
         else if($request['group'] == 'item_no') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('item_no', 'like', $request['keyword'] . '%')
             ->orderBy('item_no', 'asc')
             ->paginate(12);
         }
         else if($request['group'] == 'itemcode') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('itemcode', 'like', $request['keyword'] . '%')
             ->orderBy('itemcode', 'asc')
             ->paginate(12);
         }
         else if($request['group'] == 'barcode') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('barcode', 'like', $request['keyword'] . '%')
             ->orderBy('barcode', 'asc')
             ->paginate(12);
         }
         else if($request['group'] == 'd_desc') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('d_desc', 'like', $request['keyword'] . '%')
             ->orderBy('d_desc', 'asc')
             ->paginate(12);
         }
         else if($request['group'] == 'scan') {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where( function ($query) use ($request) {
                 $query
                     ->where('itemcode', 'LIKE', $request['keyword'])
@@ -61,10 +61,12 @@ class TBLStocksFetch extends Controller
             ->paginate(12);
         }
         else {
-            return DB::connection('db_warehouse')->table('tbl_stocks')
+            $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->orderBy('itemcode', 'asc')
             ->paginate(12);
         }
+
+        return $source;
     }
 
     public static function fetchByItemNo(Request $request) {

@@ -24,14 +24,12 @@ Route::group(['prefix' => 'db_accounts'], function () {
 });
 
 Route::group(['prefix' => 'db_warehouse'], function () {
+    Route::get('TBLStocksUpdateWSTotal/{item_no}', [App\Http\Controllers\db_warehouse\TBLStocksUpdate::class, 'updateWSTotal']);
     Route::get('TBLWSFetchDashboard', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'dashboard']);
     Route::get('PrintWithdrawalSlip', [App\Http\Controllers\db_warehouse\PrintWithdrawalSlip::class, 'print']);
     Route::get('TBLLocatorFetchSearch/{keyword}', [App\Http\Controllers\db_warehouse\TBLLocatorFetch::class, 'search']);
     Route::get('TBLLocatorFetchLocationWithProduct/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLLocatorFetch::class, 'fetchLocationWithProduct']);
-
     Route::get('TBLLocatorFetchReport', [App\Http\Controllers\db_warehouse\TBLLocatorFetch::class, 'report']);
-    
-    
     Route::get('TBLStocksFetchPaginateSearch', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'paginateSearch']);
     Route::get('TBLStocksFetchFetchByItemNo', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'fetchByItemNo']);
     Route::get('TBLStocksFetchScanBarcodeItemCode', [App\Http\Controllers\db_warehouse\TBLStocksFetch::class, 'scanBarcodeItemCode']);

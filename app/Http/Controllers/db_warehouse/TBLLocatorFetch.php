@@ -20,7 +20,7 @@ class TBLLocatorFetch extends Controller
 
         $locator = DB::connection('db_warehouse')
                     ->table('tbl_stocks_locator')
-                    ->where('ctrl_no', $ctrl_no)
+                    ->where('id', $ctrl_no)
                     ->get();
 
         $product = DB::connection('db_warehouse')
@@ -41,24 +41,51 @@ class TBLLocatorFetch extends Controller
     }
 
     public static function report(Request $request) {
-        $created = DB::connection('db_warehouse')
-                ->table('tbl_wms_report')
-                ->insert([
-                    "item_no"           => $request['item_no'],
-                    "itemcode"          => $request['itemcode'],
-                    "locator"           => $request['locator'],
-                    "reason"            => $request['reason'],
-                    "remarks"           => $request['remarks'],
-                    "created_at"        => date('Y-m-d h:i:s'),
-                    "created_by"        => $request['created_by'],
-                    "created_by_name"   => $request['created_by_name'],
-                ]);
-        
-        if($created) {
-            return [ "success" => true ];
+        if($request['locator'] == '') {
+            return [
+                "success"   => false,
+                "message"   => "Locator is required"
+            ];
+        }
+        else if($request['reason'] == '0') {
+            return [
+                "success"   => false,
+                "message"   => "Reason is required"
+            ];
+        }
+        else if($request['remarks'] == '') {
+            return [
+                "success"   => false,
+                "message"   => "Remarks is required"
+            ];
         }
         else {
-            return [ "success" => false ];
+            $created = DB::connection('db_warehouse')
+                    ->table('tbl_wms_report')
+                    ->insert([
+                        "item_no"           => $request['item_no'],
+                        "itemcode"          => $request['itemcode'],
+                        "locator"           => $request['locator'],
+                        "quantity"          => $request['quantity'],
+                        "reason"            => $request['reason'],
+                        "remarks"           => $request['remarks'],
+                        "created_at"        => date('Y-m-d h:i:s'),
+                        "created_by"        => $request['created_by'],
+                        "created_by_name"   => $request['created_by_name'],
+                    ]);
+            
+            if($created) {
+                return [
+                    "success"   => true,
+                    "message"   => "Report successfully posted"
+                ];
+            }
+            else {
+                return [
+                    "success"   => false,
+                    "message"   => "Fail to submit report."
+                ];
+            }
         }
     }
 }
