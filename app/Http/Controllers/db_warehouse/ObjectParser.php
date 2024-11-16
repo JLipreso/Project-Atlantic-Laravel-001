@@ -6,11 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 /**
+ * \App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($object);
  * \App\Http\Controllers\db_warehouse\ObjectParser::tbl_ws($object);
  */
 
 class ObjectParser extends Controller
 {
+    public static function tbl_stocks($object) {
+        return [
+            "ctrl_no"       => $object->ctrl_no ,
+            "active"        => $object->active,
+            "item_no"       => $object->item_no,
+            "itemcode"      => $object->itemcode,
+            "barcode"       => $object->barcode,
+            "d_desc"        => json_decode(json_encode($object->d_desc, JSON_INVALID_UTF8_SUBSTITUTE)),
+            "unit"          => $object->unit,
+            "total"         => $object->total,
+            "locator"       => $object->locator,
+            "primar_loc"    => $object->primar_loc,
+            "second_loc"    => $object->second_loc,
+            "ws_total"      => floatval($object->ws_total),
+        ];
+    }
+
     public static function tbl_ws($object) {
         return [
             "ctrl_no"       => $object->ctrl_no,

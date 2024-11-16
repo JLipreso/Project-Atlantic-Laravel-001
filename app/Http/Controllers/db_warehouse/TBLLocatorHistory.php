@@ -32,7 +32,10 @@ class TBLLocatorHistory extends Controller
         }
         else {
             $created = DB::connection("db_warehouse")->table("tbl_stock_locator_history")
-            ->updateOrInsert([
+            ->updateOrInsert(
+                [
+                    "item_no"           => $request['item_no'],
+                    "itemcode"          => $request['itemcode'],
                     "stock_action"      => $request['stock_action'],
                     "stock_locator_id"  => $request['stock_locator_id'],
                     "ws_ctrl_no"        => $request['ws_ctrl_no'],
@@ -148,6 +151,9 @@ class TBLLocatorHistory extends Controller
                     ->update([
                         'rel_unit' => $sum
                     ]);
+
+                    /** Update item total stock */
+                    \App\Http\Controllers\db_warehouse\TBLStocksUpdate::updateWSTotal($record->item_no);
                 }
         
                 $list[] = [

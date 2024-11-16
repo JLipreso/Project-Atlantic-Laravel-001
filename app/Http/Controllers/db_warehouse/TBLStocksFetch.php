@@ -24,49 +24,65 @@ class TBLStocksFetch extends Controller
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('ctrl_no', 'like', $request['keyword'] . '%')
             ->orderBy('ctrl_no', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else if($request['group'] == 'item_no') {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('item_no', 'like', $request['keyword'] . '%')
             ->orderBy('item_no', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else if($request['group'] == 'itemcode') {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('itemcode', 'like', $request['keyword'] . '%')
             ->orderBy('itemcode', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else if($request['group'] == 'barcode') {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('barcode', 'like', $request['keyword'] . '%')
             ->orderBy('barcode', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else if($request['group'] == 'd_desc') {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where('d_desc', 'like', $request['keyword'] . '%')
             ->orderBy('d_desc', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else if($request['group'] == 'scan') {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where( function ($query) use ($request) {
                 $query
-                    ->where('itemcode', 'LIKE', $request['keyword'])
-                    ->orWhere('barcode', 'LIKE', $request['keyword']);
+                    ->where('itemcode', $request['keyword'])
+                    ->orWhere('barcode', $request['keyword']);
             })
             ->orderBy('d_desc', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
         else {
             $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->orderBy('itemcode', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
         }
 
-        return $source;
+            $data   = $source['data'];
+            $list   = [];
+
+            foreach($data as  $index => $tbl_stocks) {
+                $list[] = [
+                    "row_no" => $source['from'] + $index,
+                    ...\App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($tbl_stocks)
+                ];
+            }
+            return \App\Http\Controllers\util_parser\Paginator::parse($source, $list);
     }
 
     public static function fetchByItemNo(Request $request) {
@@ -127,13 +143,25 @@ class TBLStocksFetch extends Controller
     }
 
     public static function scanBarcodeItemCode(Request $request) {
-        return DB::connection('db_warehouse')->table('tbl_stocks')
+        $source = DB::connection('db_warehouse')->table('tbl_stocks')
             ->where( function ($query) use ($request) {
                 $query
                     ->where('itemcode', $request['keyword'])
                     ->orWhere('barcode', $request['keyword']);
             })
             ->orderBy('d_desc', 'asc')
-            ->paginate(12);
+            ->paginate(12)
+            ->toArray();
+
+            $data   = $source['data'];
+            $list   = [];
+
+            foreach($data as  $index => $stocks) {
+                $list[] = [
+                    "row_no" => $source['from'] + $index,
+                    ...\App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($stocks)
+                ];
+            }
+            return \App\Http\Controllers\util_parser\Paginator::parse($source, $list);
     }
 }

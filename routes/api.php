@@ -47,6 +47,10 @@ Route::group(['prefix' => 'db_warehouse'], function () {
     Route::get('TBLWSProfile/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'profile']);
 });
 
+Route::group(['prefix' => 'util_generator'], function () {
+    Route::get('randomStockLocator', [App\Http\Controllers\util_generator\RandomStockLocator::class, 'generate']);
+});
+
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('cache:clear');

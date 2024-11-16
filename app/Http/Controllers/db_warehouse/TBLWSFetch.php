@@ -295,7 +295,6 @@ class TBLWSFetch extends Controller
         }
         else if(($request['group'] == 'mode') && ($request['keyword'] !== '' )) {
             $source = DB::connection('db_warehouse')->table('tbl_ws')
-            ->where()
             ->where([
                 ['mode', 'like', $request['keyword'] . '%'],
                 ['post','=', 0],
