@@ -32,7 +32,7 @@ class TBLWSDetailsFetch extends Controller
                                 ->get();
                 $list[]     = [
                     "item"      => $item,
-                    "stock"     => $stock,
+                    "stock"     => \App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($stock),
                     "locators"  => $locators,
                     "picking"   => \App\Http\Controllers\db_warehouse\TBLLocatorHistory::picking($ctrl_no, $item->recnum)
                 ];

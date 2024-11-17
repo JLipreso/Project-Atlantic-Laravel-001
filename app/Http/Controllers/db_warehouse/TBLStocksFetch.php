@@ -93,10 +93,12 @@ class TBLStocksFetch extends Controller
 
         if(count($source) > 0) {
 
+            $stock = \App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($source[0]);
+
             $extract = DB::connection('db_warehouse')
             ->table('tbl_stocks')
             ->select(DB::raw("RIGHT(LEFT(locator,2),1) AS ExLoc"))
-            ->where("item_no", $source[0]->item_no)
+            ->where("item_no", $stock['item_no'])
             ->limit(50)
             ->get();
 
@@ -107,7 +109,7 @@ class TBLStocksFetch extends Controller
                     $permitted = true;
                 }
                 else {
-                    if(str_contains($source[0]->locator, 'P8') && $request['bodega'] == '1') {
+                    if(str_contains($stock['locator'], 'P8') && $request['bodega'] == '1') {
                         $permitted = true;
                     }
                 }
@@ -115,8 +117,8 @@ class TBLStocksFetch extends Controller
 
             return [
                 "success"       => true,
-                "header"        => $source[0],
-                "locators"      => \App\Http\Controllers\db_warehouse\TBLStocksLocator::fetchLocators($source[0]->item_no),
+                "header"        => $stock,
+                "locators"      => \App\Http\Controllers\db_warehouse\TBLStocksLocator::fetchLocators($stock['item_no']),
                 "photos"        => [],
                 "permissions"   => [
                     "add_locator"   => $permitted,
@@ -125,7 +127,7 @@ class TBLStocksFetch extends Controller
                     "receive"       => $permitted
                 ],
                 "references"    => [
-                    "locator"       => $source[0]->locator,
+                    "locator"       => $stock['locator'],
                     "locator_ext"   => $extracted,
                     "bodega"        => $request['bodega'],
                     "item_no"       => $request['item_no']
