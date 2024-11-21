@@ -15,8 +15,6 @@ class PrintWithdrawalSlip extends Controller
 
         $profile            = \App\Http\Controllers\db_warehouse\TBLWSFetch::profile($request['ctrl_no']);
 
-        return $profile;
-
         $base_height        = 120;
         $product_counts     = count($profile['child']);
         $page_height        = $base_height + ($product_counts * 26);
@@ -64,9 +62,9 @@ class PrintWithdrawalSlip extends Controller
         foreach($parameters['child'] as $product) {
             $fpdf->Cell(18.7, 5, $product['item']->itemcode, $border, 0);
             $fpdf->Cell(18.7, 5, $product['item']->unit, $border, 0);
-            $fpdf->Cell(18.7, 5, $product['stock']->locator, $border, 0);
+            $fpdf->Cell(18.7, 5, $product['stock']['locator'], $border, 0);
             $fpdf->Cell(18.7, 5, "BRAND", $border, 1);
-            $fpdf->MultiCell(75, 12, $product['stock']->d_desc, $border);
+            $fpdf->MultiCell(75, 12, $product['stock']['d_desc'], $border);
             $fpdf->Cell(25, 5, "REQ QTY : " . $product['item']->qty_unit, $border, 0);
             $fpdf->Cell(25, 5, "REL QTY : " . $product['item']->rel_unit, $border, 0);
             $fpdf->Cell(25, 5, "PACK", $border, 0);
