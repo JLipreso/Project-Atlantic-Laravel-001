@@ -69,6 +69,8 @@ class TBLLocatorFetch extends Controller
                         "quantity"          => $request['quantity'],
                         "reason"            => $request['reason'],
                         "remarks"           => $request['remarks'],
+                        "barcode"           => $request['barcode'],
+                        "unit"              => $request['unit'],
                         "created_at"        => date('Y-m-d h:i:s'),
                         "created_by"        => $request['created_by'],
                         "created_by_name"   => $request['created_by_name'],
