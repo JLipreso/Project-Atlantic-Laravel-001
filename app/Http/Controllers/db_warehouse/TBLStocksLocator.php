@@ -143,21 +143,42 @@ class TBLStocksLocator extends Controller
     public static function isMyItem(Request $request) {
 
         $item_no    = $request['item_no'];
-        $bodega     = 'P' . $request['bodega'];
+        $bodega     = $request['bodega'];
 
-        $count = DB::connection('db_warehouse')
+        $source = DB::connection('db_warehouse')
             ->table('tbl_stocks')
-            ->where([
-                ['item_no', $item_no],
-                [DB::raw('LEFT(locator,2)'), $bodega]
-            ])
-            ->count();
+            ->select('locator')
+            ->where('item_no', $item_no)
+            ->get();
 
-        if($count > 0) {
-            return [ "is_mine" => true ];
+        if(count($source) > 0) {
+
+            $locator    = $source[0]->locator;
+            $length     = strlen($locator);
+            $is_mine    = false;
+
+            if(($length > 2) && (substr($locator,0,2) == 'P'. $bodega )) {
+                $is_mine = true;
+            }
+            else if(($length == 0) && ($bodega == '1')) {
+                $is_mine = true;
+            }
+            else {
+                $is_mine = false;
+            }
+
+            return [
+                "locator"   => $locator,
+                "length"    => $length,
+                "is_mine"   => $is_mine
+            ];
         }
         else {
-            return [ "is_mine" => false ];
+            return [
+                "locator"   => null,
+                "length"    => 0,
+                "is_mine"   => false
+            ];
         }
     }
 }
