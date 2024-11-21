@@ -7,7 +7,7 @@ return [
     'connections' => [
         'db_accounts' => [
             'driver'    => 'mysql',
-            'host'      => '88.222.242.33',
+            'host'      => '127.0.0.1',
             'port'      => '3306',
             'database'  => 'atlantic_accounts',
             'username'  => 'atlantic_accounts',
@@ -15,7 +15,7 @@ return [
         ],
         'db_warehouse' => [
             'driver'    => 'mysql',
-            'host'      => '88.222.242.33',  
+            'host'      => '127.0.0.1',  
             'port'      => '3306',
             'database'  => 'atlantic_wms',
             'username'  => 'atlantic_wms',
@@ -28,11 +28,10 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '88.222.242.33'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -48,7 +47,6 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
