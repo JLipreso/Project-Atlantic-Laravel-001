@@ -1,0 +1,3 @@
+1. Sa pag identify sa item kung asa nga bodega, mag base ko sa locator?
+2. Sa stock nga walay locator(empty) si Bodega 1 ra ang maka report?
+3. Sa pag add ug locator diba by bodega gihapon, sa walay locator/empty si body 1 ra pud maka add locator?

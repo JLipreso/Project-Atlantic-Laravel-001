@@ -117,7 +117,7 @@ class TBLStocksFetch extends Controller
 
             return [
                 "success"       => true,
-                "header"        => $stock,
+                "header"        => \App\Http\Controllers\db_warehouse\ObjectParser::tbl_stocks($stock),
                 "locators"      => \App\Http\Controllers\db_warehouse\TBLStocksLocator::fetchLocators($stock['item_no']),
                 "photos"        => [],
                 "permissions"   => [
