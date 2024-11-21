@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 /**
  * db_warehouse/TBLWSPaginateSearch?group=ws_no&keyword=1&bodega=1&page=1
  * \App\Http\Controllers\db_warehouse\TBLWSFetch::profile($ctrl_no);
+ * 
+ * db_warehouse/TBLWSPrintHistory?page=1
+ * 
  */
 
 class TBLWSFetch extends Controller
@@ -501,5 +504,28 @@ class TBLWSFetch extends Controller
         else {
             return [ "success" => false ];
         }
+    }
+
+    public static function printHistory(Request $request) {
+
+        $source = DB::connection('db_warehouse')
+            ->table('tbl_ws')
+            ->where('post', 1)
+            ->orderBy('ctrl_no', 'asc')
+            ->paginate(12)
+            ->toArray();
+
+        $data           = $source['data'];
+        $list           = [];
+    
+        foreach($data as  $index => $withdrawal) {
+            $list[] = [
+                "row_no" => $source['from'] + $index,
+                ...\App\Http\Controllers\db_warehouse\ObjectParser::tbl_ws($withdrawal),
+                "counts" => \App\Http\Controllers\db_warehouse\TBLWSDetailsFetch::countDetails($withdrawal->ctrl_no),
+            ];
+        }
+    
+        return \App\Http\Controllers\util_parser\Paginator::parse($source, $list);
     }
 }

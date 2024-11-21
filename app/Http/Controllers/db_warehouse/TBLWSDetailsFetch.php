@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\DB;
 class TBLWSDetailsFetch extends Controller
 {
     public static function fetchDetails($ctrl_no) {
-        $source = DB::connection('db_warehouse')->table('tbl_wsdetail')->where('ctrl_no', $ctrl_no)->get();
+        $source = DB::connection('db_warehouse')
+            ->table('tbl_wsdetail')
+            ->where('ctrl_no', $ctrl_no)
+            ->orderby('rec_no', 'asc')
+            ->get();
+            
         if(count($source) > 0) {
             $list = [];
             foreach($source as $item) {
