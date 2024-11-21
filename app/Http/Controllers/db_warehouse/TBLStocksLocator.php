@@ -149,7 +149,7 @@ class TBLStocksLocator extends Controller
             ->table('tbl_stocks')
             ->where([
                 ['item_no', $item_no],
-                [DB::raw('LEFT(department,1)'), $bodega]
+                [DB::raw('LEFT(locator,2)'), $bodega]
             ])
             ->count();
 
