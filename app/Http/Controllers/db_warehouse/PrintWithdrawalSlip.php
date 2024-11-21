@@ -15,6 +15,8 @@ class PrintWithdrawalSlip extends Controller
 
         $profile            = \App\Http\Controllers\db_warehouse\TBLWSFetch::profile($request['ctrl_no']);
 
+        return $profile;
+
         $base_height        = 120;
         $product_counts     = count($profile['child']);
         $page_height        = $base_height + ($product_counts * 26);
