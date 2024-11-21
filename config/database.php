@@ -19,7 +19,7 @@ return [
     'connections' => [
         'db_accounts' => [
             'driver'    => 'mysql',
-            'host'      => '88.222.242.33',
+            'host'      => '127.0.0.0.1',
             'port'      => '3306',
             'database'  => 'atlantic_accounts',
             'username'  => 'atlantic_accounts',
@@ -27,7 +27,7 @@ return [
         ],
         'db_warehouse' => [
             'driver'    => 'mysql',
-            'host'      => '88.222.242.33',  
+            'host'      => '127.0.0.0.1',  
             'port'      => '3306',
             'database'  => 'atlantic_wms',
             'username'  => 'atlantic_wms',
