@@ -62,8 +62,8 @@ class PrintWithdrawalSlip extends Controller
         foreach($parameters['child'] as $product) {
             $fpdf->Cell(18.7, 5, $product['item']->itemcode, $border, 0);
             $fpdf->Cell(18.7, 5, $product['item']->unit, $border, 0);
-            $fpdf->Cell(18.7, 7, $product['stock']['locator'], $border, 0);
-            $fpdf->Cell(18.7, 5, "BRAND", $border, 1);
+            $fpdf->Cell(18.7, 5, $product['stock']['locator'], $border, 0);
+            $fpdf->Cell(18.7, 8, "BRAND", $border, 1);
             $fpdf->MultiCell(75, 5, $product['stock']['d_desc'], $border);
             $fpdf->Cell(25, 5, "REQ QTY : " . $product['item']->qty_unit, $border, 0);
             $fpdf->Cell(25, 5, "REL QTY : " . $product['item']->rel_unit, $border, 0);
