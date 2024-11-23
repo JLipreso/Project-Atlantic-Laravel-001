@@ -17,50 +17,35 @@ use Illuminate\Support\Facades\DB;
 class TBLLocatorHistory extends Controller
 {
     public static function createWithdrawal(Request $request) {
-        
-        if(($request['stock_action'] == 'OUT') && (intval($request['qty_old']) < intval($request['quantity']))) {
+        $created = DB::connection("db_warehouse")->table("tbl_stock_locator_history")
+            ->updateOrInsert(
+            [
+                "item_no"           => $request['item_no'],
+                "itemcode"          => $request['itemcode'],
+                "stock_action"      => $request['stock_action'],
+                "stock_locator_id"  => $request['stock_locator_id'],
+                "ws_ctrl_no"        => $request['ws_ctrl_no'],
+                "ws_detail_ctrl_no" => $request['ws_detail_ctrl_no'],
+            ],
+            [
+                "quantity"          => $request['quantity'],
+                "qty_old"           => $request['qty_old'],
+                "created_by"        => $request['created_by'],
+                "created_at"        => date('Y-m-d h:i:s')
+            ]
+        );
+
+        if($created) {
             return [
-                "success"   => false,
-                "message"   => "Maximum valid quantity is " .$request['qty_old']
-            ];
-        }
-        else if(($request['stock_action'] == 'IN') && (intval($request['quantity']) <= 0)) {
-            return [
-                "success"   => false,
-                "message"   => "The quantity must be a valid number greater than zero (0)"
+                "success"   => true,
+                "message"   => "Saved successfuly"
             ];
         }
         else {
-            $created = DB::connection("db_warehouse")->table("tbl_stock_locator_history")
-            ->updateOrInsert(
-                [
-                    "item_no"           => $request['item_no'],
-                    "itemcode"          => $request['itemcode'],
-                    "stock_action"      => $request['stock_action'],
-                    "stock_locator_id"  => $request['stock_locator_id'],
-                    "ws_ctrl_no"        => $request['ws_ctrl_no'],
-                    "ws_detail_ctrl_no" => $request['ws_detail_ctrl_no'],
-                ],
-                [
-                    "quantity"          => $request['quantity'],
-                    "qty_old"           => $request['qty_old'],
-                    "created_by"        => $request['created_by'],
-                    "created_at"        => date('Y-m-d h:i:s')
-                ]
-            );
-
-            if($created) {
-                return [
-                    "success"   => true,
-                    "message"   => "Saved successfuly"
-                ];
-            }
-            else {
-                return [
-                    "success"   => false,
-                    "message"   => "Fail to save, try again later."
-                ];
-            }
+            return [
+                "success"   => false,
+                "message"   => "Fail to save, try again later."
+            ];
         }
     }
 
