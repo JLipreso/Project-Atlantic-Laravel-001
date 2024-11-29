@@ -38,7 +38,7 @@ class TBLLocatorHistory extends Controller
         if($created) {
             return [
                 "success"   => true,
-                "message"   => "Saved successfuly"
+                "message"   => "Saved successfully"
             ];
         }
         else {
