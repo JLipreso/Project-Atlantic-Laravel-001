@@ -54,7 +54,7 @@ class TBLWSDetailsFetch extends Controller
     }
 
     public static function inputReleaseDone(Request $request) {
-        $items = DB::connection('db_warehouse')->where("ctrl_no", $request['ctrl_no'])->get();
+        $items = DB::connection('db_warehouse')->table('tbl_wsdetail')->where("ctrl_no", $request['ctrl_no'])->get();
         return $items;
     }
 }
