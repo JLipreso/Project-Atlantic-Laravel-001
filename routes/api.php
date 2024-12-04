@@ -47,6 +47,7 @@ Route::group(['prefix' => 'db_warehouse'], function () {
     Route::get('TBLWSProfile/{ctrl_no}', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'profile']);
     Route::get('TBLWSPrintHistory', [App\Http\Controllers\db_warehouse\TBLWSFetch::class, 'printHistory']);
     Route::get('TBLStocksLocatorIsMyItem', [App\Http\Controllers\db_warehouse\TBLStocksLocator::class, 'isMyItem']);
+    Route::get('TBLWSDetailsDone', [App\Http\Controllers\db_warehouse\TBLWSDetailsFetch::class, 'inputReleaseDone']);
 });
 
 Route::group(['prefix' => 'util_generator'], function () {

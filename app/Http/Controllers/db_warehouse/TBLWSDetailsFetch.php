@@ -52,4 +52,9 @@ class TBLWSDetailsFetch extends Controller
     public static function countDetails($ctrl_no) {
         return DB::connection('db_warehouse')->table('tbl_wsdetail')->where('ctrl_no', $ctrl_no)->count();
     }
+
+    public static function inputReleaseDone(Request $request) {
+        $items = DB::connection('db_warehouse')->where("ctrl_no", $request['ctrl_no'])->get();
+        return $items;
+    }
 }
