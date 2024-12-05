@@ -77,7 +77,7 @@ class TBLWSDetailsFetch extends Controller
                     ];
                     break;
                 }
-                else if(floatval($item->rel_unit) > floatval($item->qty_unit)) {
+                else if($sum > floatval($item->qty_unit)) {
                     return [
                         "success"   => false,
                         "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values."
