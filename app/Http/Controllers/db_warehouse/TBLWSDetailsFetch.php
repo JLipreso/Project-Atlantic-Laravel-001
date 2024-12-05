@@ -70,7 +70,7 @@ class TBLWSDetailsFetch extends Controller
         }
         else {
             foreach($items as $item) {
-                if(floatval($item->rel_unit) < 0) {
+                if($sum < 0) {
                     return [
                         "success"   => false,
                         "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value."
