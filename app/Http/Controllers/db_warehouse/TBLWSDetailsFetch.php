@@ -70,21 +70,21 @@ class TBLWSDetailsFetch extends Controller
         }
         else {
             foreach($items as $item) {
-                if(floatval($item['rel_unit']) < 0) {
+                if(floatval($item->rel_unit) < 0) {
                     return [
                         "success"   => false,
                         "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value."
                     ];
                     break;
                 }
-                else if(floatval($item['rel_unit']) > floatval($item['qty_unit'])) {
+                else if(floatval($item->rel_unit) > floatval($item->qty_unit)) {
                     return [
                         "success"   => false,
                         "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values."
                     ];
                     break;
                 }
-                else if(($sum > floatval($item['qty_unit'])) && ($request['mode'] !== '5-RESTOCK')) {
+                else if(($sum > floatval($item->qty_unit)) && ($request['mode'] !== '5-RESTOCK')) {
                     return [
                         "success"   => false,
                         "message"   => "Error: Release quantity cannot exceed the requested quantity"
