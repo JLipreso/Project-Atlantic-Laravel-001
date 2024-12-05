@@ -69,35 +69,54 @@ class TBLWSDetailsFetch extends Controller
             ];
         }
         else {
+            $output = [];
             foreach($items as $item) {
                 if($sum < 0) {
-                    return [
+                    $output = [
                         "success"   => false,
-                        "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value."
+                        "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value.",
+                        "data"      => [
+                            "items"     => $items,
+                            "sum"       => $sum
+                        ]
                     ];
-                    break;
+                    return false;
                 }
                 else if($sum > floatval($item->qty_unit)) {
-                    return [
+                    $output = [
                         "success"   => false,
-                        "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values."
+                        "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values.",
+                        "data"      => [
+                            "items"     => $items,
+                            "sum"       => $sum
+                        ]
                     ];
-                    break;
+                    return false;
                 }
                 else if(($sum > floatval($item->qty_unit)) && ($request['mode'] !== '5-RESTOCK')) {
-                    return [
+                    $output = [
                         "success"   => false,
-                        "message"   => "Error: Release quantity cannot exceed the requested quantity"
+                        "message"   => "Error: Release quantity cannot exceed the requested quantity",
+                        "data"      => [
+                            "items"     => $items,
+                            "sum"       => $sum
+                        ]
                     ];
-                    break;
+                    return false;
                 }
                 else {
-                    return [
+                    $output = [
                         "success"   => true,
-                        "message"   => "Done"
+                        "message"   => "Done",
+                        "data"      => [
+                            "items"     => $items,
+                            "sum"       => $sum
+                        ]
                     ];
+                    return true;
                 }
             }
+            return $output;
         }
     }
 }
