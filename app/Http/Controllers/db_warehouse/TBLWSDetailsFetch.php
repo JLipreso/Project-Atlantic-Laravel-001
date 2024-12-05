@@ -58,7 +58,7 @@ class TBLWSDetailsFetch extends Controller
         $sum    = DB::connection('db_warehouse')
                     ->table('tbl_stock_locator_history')
                     ->where([
-                        ['ws_ctrl_no', $request['ws_ctrl_no']],
+                        ['ws_ctrl_no', $request['ctrl_no']],
                         ['ws_detail_ctrl_no', $request['ws_detail_ctrl_no']],
                     ])
                     ->sum('quantity');
