@@ -80,7 +80,7 @@ class TBLWSDetailsFetch extends Controller
                             "sum"       => $sum
                         ]
                     ];
-                    return false;
+                    break;
                 }
                 else if($sum > floatval($item->qty_unit)) {
                     $output = [
@@ -91,7 +91,7 @@ class TBLWSDetailsFetch extends Controller
                             "sum"       => $sum
                         ]
                     ];
-                    return false;
+                    break;
                 }
                 else if(($sum > floatval($item->qty_unit)) && ($request['mode'] !== '5-RESTOCK')) {
                     $output = [
@@ -102,7 +102,7 @@ class TBLWSDetailsFetch extends Controller
                             "sum"       => $sum
                         ]
                     ];
-                    return false;
+                    break;
                 }
                 else {
                     $output = [
@@ -113,7 +113,6 @@ class TBLWSDetailsFetch extends Controller
                             "sum"       => $sum
                         ]
                     ];
-                    return true;
                 }
             }
             return $output;
