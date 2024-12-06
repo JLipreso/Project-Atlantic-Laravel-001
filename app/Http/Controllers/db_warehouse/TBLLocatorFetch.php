@@ -74,6 +74,7 @@ class TBLLocatorFetch extends Controller
                         "created_at"        => date('Y-m-d h:i:s'),
                         "created_by"        => $request['created_by'],
                         "created_by_name"   => $request['created_by_name'],
+                        "owarehouse"        => $request['bodega']
                     ]);
             
             if($created) {
