@@ -54,14 +54,9 @@ class TBLWSDetailsFetch extends Controller
     }
 
     public static function inputReleaseDone(Request $request) {
+        
         $items  = DB::connection('db_warehouse')->table('tbl_wsdetail')->where("ctrl_no", $request['ctrl_no'])->get();
-        $sum    = DB::connection('db_warehouse')
-                    ->table('tbl_stock_locator_history')
-                    ->where([
-                        ['ws_ctrl_no', $request['ctrl_no']],
-                        ['ws_detail_ctrl_no', $request['ws_detail_ctrl_no']],
-                    ])
-                    ->sum('quantity');
+        
         if(count($items) == 0) {
             return [
                 "success"   => false,
@@ -71,48 +66,38 @@ class TBLWSDetailsFetch extends Controller
         else {
             $output = [];
             foreach($items as $item) {
-                if($sum < 0) {
-                    $output = [
-                        "success"   => false,
-                        "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value.",
-                        "data"      => [
-                            "items"     => $items,
-                            "sum"       => $sum
-                        ]
-                    ];
-                    break;
-                }
-                else if($sum > floatval($item->qty_unit)) {
-                    $output = [
-                        "success"   => false,
-                        "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values.",
-                        "data"      => [
-                            "items"     => $items,
-                            "sum"       => $sum
-                        ]
-                    ];
-                    break;
-                }
-                else if(($sum > floatval($item->qty_unit)) && ($request['mode'] !== '5-RESTOCK')) {
-                    $output = [
-                        "success"   => false,
-                        "message"   => "Error: Release quantity cannot exceed the requested quantity",
-                        "data"      => [
-                            "items"     => $items,
-                            "sum"       => $sum
-                        ]
-                    ];
-                    break;
-                }
-                else {
-                    $output = [
-                        "success"   => true,
-                        "message"   => "Done",
-                        "data"      => [
-                            "items"     => $items,
-                            "sum"       => $sum
-                        ]
-                    ];
+                
+                $stocks = DB::connection('db_warehouse')->table('tbl_stock_locator_history')->where([['ws_ctrl_no', $request['ctrl_no']],['ws_detail_ctrl_no', $request['ws_detail_ctrl_no']]])->get();
+                $sum    = DB::connection('db_warehouse')->table('tbl_stock_locator_history')->where([['ws_ctrl_no', $request['ctrl_no']],['ws_detail_ctrl_no', $request['ws_detail_ctrl_no']]])->sum('quantity');
+                
+                foreach($stocks as $stock) {
+                    if($stock->quantity < 0) {
+                        $output = [
+                            "success"   => false,
+                            "message"   => "Error: Input quantity cannot be less than zero. Please enter a valid value."
+                        ];
+                        break;
+                    }
+                    else if(floatval($stock->quantity) > floatval($stock->qty_old)) {
+                        $output = [
+                            "success"   => false,
+                            "message"   => "Error: Input quantity exceeds locator quantity. Please verify and adjust the values."
+                        ];
+                        break;
+                    }
+                    else if(($sum > floatval($item->qty_unit)) && ($request['mode'] !== '5-RESTOCK')) {
+                        $output = [
+                            "success"   => false,
+                            "message"   => "Error: Release quantity cannot exceed the requested quantity"
+                        ];
+                        break;
+                    }
+                    else {
+                        $output = [
+                            "success"   => true,
+                            "message"   => "Done"
+                        ];
+                    }
                 }
             }
             return $output;
