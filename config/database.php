@@ -17,7 +17,7 @@ return [
             'driver'    => 'mysql',
             'host'      => '127.0.0.1',  
             'port'      => '3306',
-            'database'  => 'atlantic_wms',
+            'database'  => 'atlantic_wms-xx',
             'username'  => 'atlantic_wms',
             'password'  => '3lGDO4$FnTbs*|KU',
         ],
